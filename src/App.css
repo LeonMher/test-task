@@ -1,0 +1,32 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.layout-selection {
+  width: 400px;
+}
+
+.template-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 100px;
+}
+
+.layout-selection-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.layout-component {
+  width: 300px;
+}
