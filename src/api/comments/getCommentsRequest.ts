@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
 async function getCommentsRequest(page: number) {
-  const {data} = await axios.get('/api/comments', {params: {page}});
+  const { data } = await axios.get("/api/comments", { params: { page } });
   return data;
 }
 
