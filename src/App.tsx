@@ -1,5 +1,3 @@
-// App.tsx
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAuthorsRequest } from "./api/authors/getAuthorsRequest";
 import { getCommentsRequest } from "./api/comments/getCommentsRequest";
@@ -22,7 +20,6 @@ function App() {
     return map;
   }, {} as Record<number, { name: string; avatar: string }>);
 
-  // Helper function to get replies for a given comment
   const buildCommentTree = (
     comments: TComment[],
     parentId: number | null
@@ -31,7 +28,7 @@ function App() {
       .filter((comment) => comment.parent === parentId)
       .map((comment) => ({
         ...comment,
-        replies: buildCommentTree(comments, comment.id), // Recursively build replies
+        replies: buildCommentTree(comments, comment.id),
       }))
       .sort(
         (a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()
