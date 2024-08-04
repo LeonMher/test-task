@@ -1,8 +1,15 @@
 import axios from "axios";
 
-async function getCommentsRequest(page: number) {
-  const { data } = await axios.get("/api/comments", { params: { page } });
+import MockAdapter from "axios-mock-adapter";
+import { commentsPage1 } from "../../data/comments";
+
+export const getCommentsRequest = async () => {
+  var mock = new MockAdapter(axios);
+  mock.onGet("/api/comments").reply(200, {
+    users: commentsPage1,
+  });
+  const { data } = await axios.get("/api/comments");
   return data;
-}
+};
 
 export default getCommentsRequest;
