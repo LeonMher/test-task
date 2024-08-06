@@ -3,6 +3,7 @@ import { getAuthorsRequest } from "./api/authors/getAuthorsRequest";
 import { getCommentsRequest } from "./api/comments/getCommentsRequest";
 import CommentCard from "./components/CommentCard";
 import { TComment } from "./types";
+import "./index.css";
 
 function App() {
   const { data: authors } = useQuery({
@@ -40,13 +41,14 @@ function App() {
     : [];
 
   return (
-    <div className="flex items-center flex-col gap-1">
+    <div className="flex items-center flex-col gap-1 app">
       {rootComments.map((comment: TComment) => (
         <CommentCard
           key={comment.id}
           comment={comment}
           replies={comment.replies || []}
           user={usersMap[comment.author]}
+          usersMap={usersMap} // Pass the usersMap to replies
         />
       ))}
     </div>

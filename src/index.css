@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.app {
+  background: url("./assets//images//background.webp");
+  background-size: cover !important;
+}
