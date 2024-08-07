@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { TComment } from "../types";
+import { TComment } from "../App";
 
 type CommentCardProps = {
   comment: TComment;

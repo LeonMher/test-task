@@ -27,10 +27,11 @@ function App() {
   } = useInfiniteQuery({
     queryKey: ["comments"],
     queryFn: ({ pageParam = 1 }) => getCommentsRequest(pageParam),
-    getNextPageParam: (lastPage) => {
+    getNextPageParam: (lastPage: any) => {
       const nextPage = lastPage.pagination.page + 1;
       return nextPage <= lastPage.pagination.total_pages ? nextPage : undefined;
     },
+    initialPageParam: 1, // Provide initialPageParam
   });
 
   const { data: authorsData, isLoading: isAuthorsLoading } = useQuery({
@@ -44,10 +45,13 @@ function App() {
   const comments = commentsData?.pages.flatMap((page) => page.data) || [];
 
   const usersMap =
-    authorsData?.users?.reduce((map, user) => {
-      map[user.id] = user;
-      return map;
-    }, {} as Record<number, { name: string; avatar: string }>) || {};
+    authorsData?.users?.reduce(
+      (map: { [x: string]: any }, user: { id: string | number }) => {
+        map[user.id] = user;
+        return map;
+      },
+      {} as Record<number, { name: string; avatar: string }>
+    ) || {};
 
   const sortedComments = comments.sort(
     (a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()
