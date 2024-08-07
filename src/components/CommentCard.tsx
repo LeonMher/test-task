@@ -8,7 +8,6 @@ type CommentCardProps = {
   user: { name: string; avatar: string };
   replies: TComment[];
   usersMap: Record<number, { name: string; avatar: string }>; // Added usersMap prop
-  onLike?: () => void; // Make onLike optional
 };
 
 const CommentCard: React.FC<CommentCardProps> = ({
@@ -16,7 +15,6 @@ const CommentCard: React.FC<CommentCardProps> = ({
   user,
   replies,
   usersMap,
-  onLike,
 }) => {
   const { text, likes, likedByUser } = comment;
   const [likesState, setLikesState] = useState(likes);
@@ -25,24 +23,25 @@ const CommentCard: React.FC<CommentCardProps> = ({
   const handleLike = () => {
     setLikedByUserState((prev) => !prev);
     setLikesState((prev) => (likedByUserState ? prev - 1 : prev + 1));
-    if (onLike) onLike(); // Ensure onLike is called only if it exists
   };
 
   return (
-    <div className="w-[600px] p-3 bg-inherit flex flex-col border-l-2 border-gray-300">
-      <div className="flex items-start gap-4">
+    <div className="w-full max-w-[600px] p-3 bg-inherit flex flex-col border-l-2 border-gray-300 mx-auto">
+      <div className="flex flex-col sm:flex-row items-start gap-4">
         <img
-          className="rounded-full w-[60px] h-[60px]"
+          className="rounded-full w-16 h-16 sm:w-24 sm:h-24"
           src={user?.avatar}
           alt={user?.name}
         />
         <div className="flex flex-col flex-1">
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col sm:flex-row justify-between items-start">
             <div className="activity">
-              <div className="font-bold">{user?.name}</div>
-              <div className="text-gray-600">Just now</div>
+              <div className="font-bold text-white">{user?.name}</div>
+              <div className="text-gray-400 text-sm">
+                {new Date(comment.created).toLocaleString()}
+              </div>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center mt-2 sm:mt-0">
               {likedByUserState ? (
                 <FavoriteIcon sx={{ color: "red" }} onClick={handleLike} />
               ) : (
@@ -51,24 +50,21 @@ const CommentCard: React.FC<CommentCardProps> = ({
                   onClick={handleLike}
                 />
               )}
-              <div className="ml-1">{likesState}</div>
+              <div className="ml-1 text-sm text-white">{likesState}</div>
             </div>
           </div>
-          <div className="mt-2">{text}</div>
+          <div className="mt-2 text-sm text-white">{text}</div>
         </div>
       </div>
       {replies.length > 0 && (
         <div className="flex flex-col mt-4 pl-4">
-          {" "}
-          {/* Adjust padding-left here */}
           {replies.map((reply) => (
             <CommentCard
               key={reply.id}
               comment={reply}
               replies={reply.replies || []}
-              user={usersMap[reply.author]} // Use the correct user for replies
-              usersMap={usersMap} // Pass usersMap to nested replies
-              onLike={() => onLike && onLike()} // Ensure onLike is called only if it exists
+              user={usersMap[reply.author]}
+              usersMap={usersMap}
             />
           ))}
         </div>
