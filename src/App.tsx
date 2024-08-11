@@ -5,6 +5,7 @@ import { getAuthorsRequest } from './api/authors/getAuthorsRequest';
 import CommentCard from './components/CommentCard';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { TCommentsResponse, TComment } from './types/interface';
+import { useLikes } from './context/LikesContext';
 import './index.css';
 
 function App() {
@@ -33,6 +34,8 @@ function App() {
 		queryKey: ['authors'],
 		queryFn: getAuthorsRequest,
 	});
+
+	const { totalLikes } = useLikes();
 
 	if (isAuthorsLoading) return <div>Loading authors...</div>;
 	if (isError) return <div>Error loading comments: {error.message}</div>;
@@ -67,7 +70,6 @@ function App() {
 	const rootComments = buildCommentTree(sortedComments, null);
 
 	const totalComments = comments.length;
-	const totalLikes = comments.reduce((sum, comment) => sum + comment.likes, 0);
 
 	return (
 		<div className="flex items-center flex-col gap-1 app">

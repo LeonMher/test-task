@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { TComment } from '../App';
+import { TComment } from '../types/index';
+import { useLikes } from '../context/LikesContext';
 
 type CommentCardProps = {
 	comment: TComment;
@@ -17,12 +18,19 @@ const CommentCard: React.FC<CommentCardProps> = ({
 	usersMap,
 }) => {
 	const { text, likes, likedByUser } = comment;
-	const [likesState, setLikesState] = useState(likes);
 	const [likedByUserState, setLikedByUserState] = useState(likedByUser);
+	const { incrementLikes, decrementLikes } = useLikes();
 
 	const handleLike = () => {
-		setLikedByUserState(prev => !prev);
-		setLikesState(prev => (likedByUserState ? prev - 1 : prev + 1));
+		setLikedByUserState(prev => {
+			const newLikedByUserState = !prev;
+			if (newLikedByUserState) {
+				incrementLikes();
+			} else {
+				decrementLikes();
+			}
+			return newLikedByUserState;
+		});
 	};
 
 	return (
@@ -50,7 +58,9 @@ const CommentCard: React.FC<CommentCardProps> = ({
 									onClick={handleLike}
 								/>
 							)}
-							<div className="ml-1 text-sm text-white">{likesState}</div>
+							<div className="ml-1 text-sm text-white">
+								{likes + (likedByUserState ? 1 : 0)}
+							</div>
 						</div>
 					</div>
 					<div className="mt-2 text-sm text-white">{text}</div>
