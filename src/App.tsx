@@ -6,6 +6,7 @@ import CommentCard from './components/CommentCard';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { TCommentsResponse, TComment } from './types/interface';
 import { useLikes } from './context/LikesContext';
+import LoadingScreen from './components/LoadingScreen';
 import './index.css';
 
 function App() {
@@ -19,7 +20,6 @@ function App() {
 	} = useInfiniteQuery({
 		queryKey: ['comments'],
 		queryFn: ({ pageParam = 1 }) => getCommentsRequest(pageParam),
-
 		getNextPageParam: lastPage => {
 			const typedLastPage = lastPage as TCommentsResponse;
 			const nextPage = typedLastPage.pagination.page + 1;
@@ -27,7 +27,7 @@ function App() {
 				? nextPage
 				: undefined;
 		},
-		initialPageParam: 1, // Provide initialPageParam
+		initialPageParam: 1,
 	});
 
 	const { data: authorsData, isLoading: isAuthorsLoading } = useQuery({
@@ -35,9 +35,9 @@ function App() {
 		queryFn: getAuthorsRequest,
 	});
 
-	const { totalLikes } = useLikes();
+	const { totalLikes, isLoading: isLikesLoading } = useLikes();
 
-	if (isAuthorsLoading) return <div>Loading authors...</div>;
+	if (isAuthorsLoading || isLikesLoading) return <LoadingScreen />;
 	if (isError) return <div>Error loading comments: {error.message}</div>;
 
 	const comments = commentsData?.pages.flatMap(page => page.data) || [];
@@ -87,7 +87,7 @@ function App() {
 					comment={comment}
 					replies={comment.replies || []}
 					user={usersMap[comment.author]}
-					usersMap={usersMap} // Pass the usersMap to replies
+					usersMap={usersMap}
 				/>
 			))}
 			<button
