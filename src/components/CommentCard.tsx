@@ -34,7 +34,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
 	};
 
 	return (
-		<div className="w-full max-w-[600px] p-3 bg-inherit flex flex-col border-l-2 border-gray-300 mx-auto">
+		<div className="w-full max-w-[600px] p-3 bg-inherit flex flex-col border-l-2 border-gray-300 mx-auto comment-card">
 			<div className="flex flex-col sm:flex-row items-start gap-4">
 				<img
 					className="rounded-full w-16 h-16 sm:w-24 sm:h-24"
@@ -54,7 +54,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
 								<FavoriteIcon sx={{ color: 'red' }} onClick={handleLike} />
 							) : (
 								<FavoriteBorderIcon
-									sx={{ color: 'gray' }}
+									sx={{ color: 'red' }}
 									onClick={handleLike}
 								/>
 							)}
