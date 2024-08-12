@@ -51,10 +51,6 @@ function App() {
 			{} as Record<number, { name: string; avatar: string }>
 		) || {};
 
-	const sortedComments = comments.sort(
-		(a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()
-	);
-
 	const buildCommentTree = (
 		comments: TComment[],
 		parentId: number | null
@@ -67,7 +63,7 @@ function App() {
 			}));
 	};
 
-	const rootComments = buildCommentTree(sortedComments, null);
+	const rootComments = buildCommentTree(comments, null);
 
 	const totalComments = comments.length;
 
@@ -91,7 +87,9 @@ function App() {
 				/>
 			))}
 			<button
-				onClick={() => fetchNextPage()}
+				onClick={() => {
+					fetchNextPage();
+				}}
 				disabled={!hasNextPage || isFetchingNextPage}
 				className="text-white w-[200px] bg-slate-600"
 			>
