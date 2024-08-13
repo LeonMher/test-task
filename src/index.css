@@ -16,6 +16,9 @@ body {
 
 .go4268192979,
 .go2484888251 {
+	position: relative;
+	left: 6px;
+	bottom: 10px;
 	width: 70px !important;
 	height: 70px !important;
 }

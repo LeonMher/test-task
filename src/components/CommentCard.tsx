@@ -43,7 +43,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
 					src={user?.avatar}
 					alt={user?.name}
 				/>
-				<div className="flex flex-col flex-1">
+				<div className="flex flex-col  flex-1">
 					<div className="flex flex-row justify-between items-start">
 						<div className="activity">
 							<div className="font-bold text-white">{user?.name}</div>
