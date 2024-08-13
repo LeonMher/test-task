@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { TComment } from '../types/index';
 import { useLikes } from '../context/LikesContext';
+import Heart from 'react-animated-heart';
 
 type CommentCardProps = {
 	comment: TComment;
@@ -21,10 +20,13 @@ const CommentCard: React.FC<CommentCardProps> = ({
 	const [likedByUserState, setLikedByUserState] = useState(likedByUser);
 	const { incrementLikes, decrementLikes } = useLikes();
 
+	const [isClick, setClick] = useState(false);
+
 	const handleLike = () => {
 		setLikedByUserState(prev => {
 			const newLikedByUserState = !prev;
-			if (newLikedByUserState) {
+			setClick(!isClick);
+			if (!isClick) {
 				incrementLikes();
 			} else {
 				decrementLikes();
@@ -35,14 +37,14 @@ const CommentCard: React.FC<CommentCardProps> = ({
 
 	return (
 		<div className="w-full max-w-[600px] p-3 bg-inherit flex flex-col border-l-2 border-gray-300 mx-auto comment-card">
-			<div className="flex flex-col sm:flex-row items-start gap-4">
+			<div className="flex items-start gap-4">
 				<img
 					className="rounded-full w-16 h-16 sm:w-24 sm:h-24"
 					src={user?.avatar}
 					alt={user?.name}
 				/>
 				<div className="flex flex-col flex-1">
-					<div className="flex flex-col sm:flex-row justify-between items-start">
+					<div className="flex flex-row justify-between items-start">
 						<div className="activity">
 							<div className="font-bold text-white">{user?.name}</div>
 							<div className="text-gray-400 text-sm">
@@ -50,14 +52,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
 							</div>
 						</div>
 						<div className="flex items-center mt-2 sm:mt-0">
-							{likedByUserState ? (
-								<FavoriteIcon sx={{ color: 'red' }} onClick={handleLike} />
-							) : (
-								<FavoriteBorderIcon
-									sx={{ color: 'red' }}
-									onClick={handleLike}
-								/>
-							)}
+							<Heart isClick={isClick} onClick={handleLike} />
 							<div className="ml-1 text-sm text-white">
 								{likes + (likedByUserState ? 1 : 0)}
 							</div>

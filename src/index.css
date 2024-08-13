@@ -14,6 +14,12 @@ body {
 	box-sizing: border-box;
 }
 
+.go4268192979,
+.go2484888251 {
+	width: 70px !important;
+	height: 70px !important;
+}
+
 .app,
 .loading-background {
 	background: linear-gradient(

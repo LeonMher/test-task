@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react/react-in-jsx-scope */
+
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getCommentsRequest } from './api/comments/getCommentsRequest';
 import { getAuthorsRequest } from './api/authors/getAuthorsRequest';
@@ -40,7 +41,9 @@ function App() {
 	if (isAuthorsLoading || isLikesLoading) return <LoadingScreen />;
 	if (isError) return <div>Error loading comments: {error.message}</div>;
 
-	const comments = commentsData?.pages.flatMap(page => page.data) || [];
+	const comments =
+		(commentsData?.pages as TCommentsResponse[]).flatMap(page => page.data) ||
+		[];
 
 	const usersMap =
 		authorsData?.users?.reduce(
@@ -69,7 +72,7 @@ function App() {
 
 	return (
 		<div className="flex items-center flex-col gap-1 app">
-			<div className="flex justify-between w-[600px] text-white">
+			<div className="flex justify-between w-[400px] text-white xl:w-[600px]">
 				<p>{totalComments} Комментариев</p>
 				<div className="flex gap-1">
 					<FavoriteBorderIcon />
@@ -91,7 +94,7 @@ function App() {
 					fetchNextPage();
 				}}
 				disabled={!hasNextPage || isFetchingNextPage}
-				className="text-white w-[200px] bg-slate-600"
+				className="text-white w-[200px] bg-slate-600 mb-[50px]"
 			>
 				{isFetchingNextPage
 					? 'Загрузка...'
